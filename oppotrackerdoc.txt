@@ -1,0 +1,605 @@
+1)index.html
+   i)Image(as favicon)-used in html
+   ii)given title will be shown just after favicon img
+//public folder image cant be access within src anywhere
+a)must be png only and must be within public folder
+b)href="%PUBLIC_URL%/favicon.png" only last url change not the whole 
+   ii)description (content="---------------")
+   iii)bootstap css(within head)
+   iv)bootstrap.js(at end of body)
+c)remove- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+2)index.js has <App/> (i.e,App comp calling only and nothing else)
+3)delete index.css(as not req)
+   i)remove import "index.css"; from index.js also
+4)importing sequence
+
+  // import css file 
+  //import from package
+  //import my components
+
+
+
+5)App.js has router route
+6)App.css has global css
+
+_______________________________________Header_____________________________________
+________________navbar_______________
+1
+i)sticky 
+//position property to navbar
+CSS- 
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+ii)avoid operlapping of content over header
+//give bg to nav instead of navbar(or anything that is set sticky)
+CSS-
+nav {
+  background-color: white;
+}
+
+
+_________image____________
+1)Image(in js file)
+ a)Local image (already saved and used in js file)- import image path as variable and use src={imported_img_var} otherwise img not show
+ b)Dynamic image/external img - directly url is used
+
+  Image(in css)
+  directly url is used
+__________link_____________
+2)Link 
+  a)internal link(without refreshing)-Link/Navlink component
+  b)external link-a tag used
+3)Link component
+  //Use link_comp class in every Link component of react-router-dom
+  <Link to="/path" className="link_comp">any link</Link>
+
+   GLOBAL CSS- 
+    //in hover state
+    .link_comp:hover {
+      text-decoration: none;
+    }
+__________mui btn___________
+3)mui btn
+ By default,mui btn text remain in upper case
+ CSS-
+ text-transform: none;
+
+____________img____________
+4)responsive bg landing img(so not req to fit img within extra container
+//image content can never be stop from becoming crop on different screen size either using cover,contaian ,position
+so try to use such bg img whose content already remains at center otherwise its content gets crop
+
+CSS- 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width:100vw;//if req
+  min-height: 91vh;//This is min height but it(height) can grow when content 
+                     within it will grow, due to screen size or dynamically 
+                     so no more fixed height problem 
+  //for overlay(only can be done by linear-gradient easily)
+  background: linear-gradient(rgb(65 66 68 / 80%), rgb(60 61 63 / 50%)),url("../assets/landing_img.png");
+6)Background Height(if fixed height not req)
+  CSS-
+    min-height:91vh;
+7)Responsive div width
+  instead of % for width of div, use col-md to make it responsive automatically otherwise
+   media query will be req to make responsive width in different screen size
+  Eg-
+  CSS 
+  div with 50% width ,justify content center  (dont do)
+  //as a result,in mobile size also, width becomes 50% so media query will be req
+5)MediaQuery(width x height)
+//for responsiveness we have to think about only screen width
+ i)Mobile(upto 768px)
+ ii)ipad mini(from mobile upto 820px)
+    ipad Air(from ipad mini upto 900px)
+ iii)desktop(above 900px of ipad)
+
+  Syntax - // alone min-width oralone max-width can also be given
+    @media screen and (min-width: something)) and (max-width: something)
+    {
+
+    }
+_____________Paper______________________
+8) For good looking div(use paper component of mui)
+   Paper is itself a block comp like div so no need to wrap it within an another div
+   <Paper component={Box} p={5} m={1}>
+   <Paper/>
+_______________Icons____________________
+9)Icons in react
+i)mui icons
+  a)Installation(first time only)-
+     npm install @mui/icons-material(code take from mui website)
+  b)Import(req icon) in js file-
+     Eg-
+        import MenuIcon from '@material-ui/icons/Menu';
+  c)use in JSX as icon component
+     Eg-
+         <MenuIcon/>  
+ii)react icons(use for already available colored icon only)
+  a)Installation(first time only)-
+     npm install react-icons --save(code take from google->react icons)
+  b)Import(req icon) in js file- automatically import while writing
+     Eg-(icon mame copied only from site)
+       import { FcGoogle } from "react-icons/fc";
+  c)use in JSX as icon component
+     Eg-
+          <FcGoogle/>   
+iii)icon within mui input field
+//req thing import
+//only using a prop (code prent in mui site)
+//position- "start" or "end" .....
+         InputProps={{
+                      startAdornment: (<InputAdornment position="start"><EmailIcon /></InputAdornment>),
+                    }}
+
+10)Textfield in mui
+  inbuilt label can be ignored when placeholder & my label is req to put
+
+________________________line with text at middle______________________
+11)line with text at middle
+<p id="horizontal-line">or login with</p>
+ CSS-
+    #horizontal-line::before,
+    #horizontal-line::after {
+     content: "";
+     display: block;
+     flex: 1 1;
+     margin: auto;
+     border-bottom: 2px solid #b9babb;
+    }
+    #horizontal-line {
+     display: flex;
+     flex-direction: row;
+     color:#b9babb;
+     font-weight:bolder ;
+   }
+   #horizontal-line:before,
+   #horizontal-line:after {
+    content: "";
+    flex: 1 1;
+    width: 10px;
+   }
+ /* ____________________textarea____________________ */
+12)Text area
+   //initial row fixed
+   <textarea className="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Enter description/any note"></textarea>
+
+ CSS-
+  textarea{
+    resize: none;
+    overflow: hidden;//to avoid scroll bar
+  }
+
+13)Text area height(visually also) grow dynamically acc to content
+//By default text area field is multilined but its height remains fixed visually
+Using ref-
+  <textarea ref={textAreaRef} onChange={textareaGrow}></textarea>
+
+JS-
+  const textAreaRef = useRef(null);
+
+  const textareaGrow = () => {
+    textAreaRef.current.style.height = "auto";
+    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+  };
+___________________________Css change on user action/event___________________
+14)Css change on user action/event
+ use useref
+ Eg-
+  const elmRef = useRef(null);
+
+  //value must be within inverted comma ""
+  const cssChange= () => {
+    elmRef.current.style.property ="value";
+    // elmRef.current.style.color = 'white';
+    // elmRef.current.style.width = '150px';
+  }
+___________________Text opacity change______________
+
+15)Text opacity change
+  CSS-
+     opacity:0.6;
+16)hr has by default top and bottom padding
+17)Bootstrap padding
+  pr-0 (0 also exist, helps to remove/override bydefault padding)
+  p-0
+  .....
+18)Generally bootstrap row is divided into col/col-md bootstrap col,and
+ in each lesser screen size, col width changes on its own(grow/shrink) accordingly 
+ in each row,at mobile size width becomes 100%.Here each col is flexible.
+
+ If we dont want to allow col to come one after another and go to in next line 
+ in smaller screen size but remain in same line(like in a table row),
+ So, flex-nowrap is used in same parent div, in which d-flex is used, to do so.
+ But,still each col width size does not remain fixed but changes on its own(grow/shrink) 
+ in each row,accordingly in lesser screen size.
+ But,col will grow/shrink within its parent width but does not overflow at any cost 
+ even writing overflow:auto;
+ Sol-
+ For responsive list like Table(i.e,with overflow) 
+ i)Each col must have fixed width(say in px)
+ii)then d-flex in parent row.This will cause col to go out of parent boundary 
+ (here parent boundary is row) in smaller screen 
+ iii)SOL- whole table is wrapped within a div with overflow:auto css property (if row is wrapped with overflow:auto css property then all 
+row will overflow independent of each other)
+ iv)But, d-flex by default ignore fixed col width  and continue to grow/shrink on its own
+ _____________________ Maintain fixed col width on d-flex also________________
+  SOL-In each child(col),instead of width:145px ,flex property will be used for fixed width col
+ //In each child
+      flex-basis: 145px;//col fixed width
+      flex-grow: 0;//not grow on d-flex
+      flex-shrink: 0;//not shrink on d-flex
+19)_____________________Text overflow instead of word breaking_________________________________________
+ .textdiv{
+    overflow: auto;
+ }
+ /* hide scrollbar due to text overflow */
+  .textdiv::-webkit-scrollbar {
+    display: none;
+  }
+20)___________________________________overflow property_______________________________________________
+  overflow property is used in boundary.It can be current div or any other div so that instead 
+  of going outside that boundary,content goes within the boundary and scroll bar appears.
+  overflow: auto;
+  .overflowdiv::-webkit-scrollbar {
+    display: none;
+  }
+21)____________________________________flex-nowrap_____________________________________________________
+ //normally not req bz on avoid wrapping, in lesser screen col becomes very small and becomes lees fontsize.
+ i)flex-nowrap is used in bootrap to avoid going col to next line by default on lesser screen size
+ ii)It is used in the div in which d-flex will be used
+22)____________________________________flex-wrap_____________________________________________________  
+ //It is used in the div in which d-flex will be used.
+ i)used to wrap the columns for diff screen size like bootstrap by default wrap property
+   when bootstrap grid is not used.
+ ii)used also when no. of col in a row can be anything(unknown).
+23)____________________________________min-width/min-height_____________________________________________________
+  min-width/min-height used with background div to inc background css due to diff screen size
+  horizontally- sometime req during x overflow for bg
+  vertically-during bg color/img
+ _______________________________Form validation___________________________________
+24)
+i)if(field==="")//use triple =
+otherwise automatically show error
+ii)onSubmit event only work on <form></form> tag
+iii)autoComplete="on"
+iv)give unique id to diff TextField component 
+25)debugger icon in left toolbar 
+   breakpoint
+   run
+
+26)Protected route
+1. usenavigate cannot be used on first render so it can only be used with event occured by 
+user action or with useeffect only.
+But, still you can handle this using timer delay like in protected route
+2.route path must exist(must not be within any condition) otherwise page 404 error occur 
+3.element prop of route must contain component
+ but we must not be returned navigate("...") to it bz it is not a component
+4.HOC is used for protected routes
+
+27)Inline style
+  style={{property:"value"}}
+28)Form
+  submit btn must be present inside the form tag otherwise onSubmit event will not work
+29)Link/navigate 
+If inbuilt state props is used then it will refresh the app though we are using Link component of router 
+for making SPA dom ,so it is inefficient so dont use and it wll also not work for passing setState(of useState) fn 
+30)Counting in map
+//note: not a usestate variable but a normal variable
+  let countOpp=0;
+31)reverse an array
+  a.reverse();//it reverse original array a
+32)______________________useState_________________________
+
+i)During rerendering due to useState,only the state that causes
+rerenders are updated in JSX during rerendering but not other state variable
+ii)setState dont write within map(loop) fn otherwise too many renders
+iii) any setState fn must not be used in Js directly .
+If setState fn is req to execute without any event or without 
+placing it within any fn then wrap it within useEffect otherwise 
+very costly causing infinite loop(error:too many renders)
+iv)
+useState variable must be not initialized with another state variable(say x)
+ bz initialization part of any state variable is executed only once 
+ so state variable initialized with other state variable(x) will be assigned 
+ with initial (empty) value of other state var(x) but though x get updated 
+ with req value(say like after fetching,or during rerendering...), that state 
+ variable will be not initialized with updated value of x as initialization 
+of useState is only executed once
+v)Undefined error in useState
+  let {oppData,setOppData}=useState();
+  // Error-State variable is undefined
+  Sol-Change bracket {} to []
+  let [oppData,setOppData]=useState();
+v)In React, when a component is mounted, its initial state values are set. If you
+ navigate away from the page and then return to the same page, the component will be 
+remounted, and the initial state values will be set again. This means that the initial
+state values are not persisted across page navigations unless you take specific 
+actions to persist the state.
+
+State variable is undefined
+33)_________________________Context Api________________________
+The Context API can also be useful if you need to pass data between components 
+that are not directly related or to nested child components. 
+
+i)When to pass the data while navigating /redirecting from one page to another
+ page(but not from one comp to its child comp
+Note - don't pass data using inbuilt state prop of Link component of router dom or 
+state prop of useNavigate hook bz it will refresh the app so inefficient
+ii)when in many places data is req to access
+iii)use to avoid passing SetState fn as props directly.Bz passing setState fn directly 
+as props is not possible now bz it will show 
+
+__________________________________Date____________________________________________________
+34)
+Note- store date in string format so that easier to access
+i)Compare dates
+Note- Dates can be compare when present in date obj format so convert date in date obj format
+Code-
+     const currentDate = new Date();
+     const deadlineDate = new Date(given date);
+     if(currentDate <= deadlineDate)
+        //date open/remaining
+     else if(currentDate > deadlineDate)
+        //date closed/passed
+ii)Change date format 
+ Note- In react, while storing date(string) in state variable ,date format gets 
+changed automatically from any given format so only change the format while 
+displaying the data
+iii)Change date format while displaing data 
+//first way
+a)const date=`${new Date(givenDate).getDate()}/${new Date(givenDate).getMonth()+1}/${new Date(givenDate).getFullYear()}`}
+Note: month here by default staerts with 0 so +1 is done here
+b)Using moment.js npm package(easiest way)
+ Google  then moment.js.com
+ install  then go to docs then using moment(from right sidebar)
+ import
+ use it (code from home page)
+_______________________________________Filter data_____________________________________________
+35)Filter(usinf filter method)
+JS-const [filterOption, setFilterOption] = useState("");
+
+    if(filterOption==="All")
+      setConditionalOppData(oppData);//original data
+    else if(filterOption==="applied"")
+      setConditionalOppData(oppData.filter(val=>val.status===filterOption));
+JSX-
+        <select>
+          name="filterOption" 
+          value={filterOption} 
+          onChange={(e)=>setFilterOption(e.target.value)}
+        >
+          <option>All</option>
+          <option>applied</option>
+          <option>pending...</option>
+        </select>
+ _____________________________________________async await___________________________________________   
+36)
+i)await keyword can only be used inside an async function and try and catch must be at 
+top level of async fn 
+*It must not be inside a callback function(like 
+.then(()=>{
+//code
+await.....
+})
+if this is the case then make callback fn as async fn 
+.then(async()=>{
+//code
+await.....
+})
+
+37) difference == and ===
+38) In map,filter... fn,one return statement must be present at the end(though 
+somewhere present in btn) otherwise warning
+___________________________________________share functionality__________________________________________
+//fn for sharing any link(browser url /custom url) 
+using inbuilt web share api that automatically opens sharing options
+ Code-
+//on onClick event
+    const handleShareOppLink=async()=>{
+      try {
+        await navigator.share({
+          text: 'Check out this opportunity!',
+          url: applyLink
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+_____________________________________export table as pdf________________________________________
+39)pdf generate
+i) install jspdf  and jspdf-autotable npm both packages in react
+_________________try block___________________________________________
+40)try block- All the statements within try block are executed one by one.If any statement 
+will cause error then remaining part of try block will not be executed and directly catch 
+block gets executed.
+Note- So setLoading(false) must not be within try block bz if any error occur in try block
+then setLoading remains true but will never becomes false so Tailspin for loading will never stop
+Error can be fetching error or permission error(when req permitted doc is not present in firestore)
+
+____________________________________________key or id include in each list item_________________
+42)
+key= document id(firebase)
+id must be stored during add new document + during fetching both times in our app only not in firestore
+(as doc id already remains present in firestore so not need to again store as property) 
+//add 
+const docRef=await addNew("Opportunities", oneOpp);
+setOneOpp({ ...oneOpp,id:docRef.id});
+//fetch
+      const oppSnapshot = await fetchDocs("Opportunities");
+      //result is array of objects
+      const result = oppSnapshot.docs.map((docRef) => {
+        //docRef is snapshot of 1 doc
+        // docRef.id is id of each obj(docRef)
+        const id = docRef.id;
+        //docRef.data is each obj in array of obj
+       return { ...docRef.data(), id };
+      });
+ii)Avoid intermediate error for key props by doing indirect modification of state variable using an extra variable
+        //newOpp variable is made intentionally bz when we do setState(oneOpp) then oneOpp used in same 
+        //fn after its setstate, is not directly modified in current render but have the prev value 
+        //stored so during current render of oneOpp modification ,oppData think that there is no key 
+       // props for that new added list item
+        const newOpp = { ...oneOpp, id: docRef.id };
+        setOneOpp(newOpp);
+        setOppData([...oppData, newOpp]); // add the new object to the array
+43)-------------------------------------------Update an obj of an array------------------------------
+Note-
+i)update/replacing a property is easy-USING spread operator bz there is only one property in an obj
+ii)update/replacing an obj is not easy-Replace done using map fn not with spread operator bz doing spread operator 
+it will add new obj but not replace bz we dont know among so many obj which obj is req to replace
+
+44)Date obj
+If only date is mentioned but time is not mentioned in date obj then it is not guaranteed that it will 
+recognize given date as in IST or in UTC.
+i)new Date("2023-04-07")  giving Fri Apr 07 2023 05:30:00
+Here given date is itself is recognized as UTC(automatically on its own) though we think we are giving it as ist
+.So it converts it in local ist time by +5.30 in recognized UTC given date
+ii)new Date("2023-4-7") giving Fri Apr 07 2023 00:00:00
+Here given date is itself is recognized as IST local time directly(automatically on its own).
+So directly gave the IST loxcal time as it is.
+
+IST local time is correct ,i.e,00:00:00
+
+To avoid confusion set Time according to ist time zone ,i.e,  new Date("any....").setHours(0,0,0,0)
+
+44) TIming of react calendar is working same as Date obj
+45)____________________________________ finally block____________________________________________
+finally is a block of code that is used in conjunction with try and catch blocks in JavaScript. The
+ finally block is always executed after the try and catch blocks have finished executing, regardless 
+ of whether an exception was thrown or caught.
+Use- For loading
+Syntax-
+try {
+  // some code that might throw an exception
+} catch (e) {
+  // handle the exception
+} finally {
+  // code that should always execute
+}
+_____________avoid text and icon within text field overlapping_______
+46)text over iconoverlap avoid
+CSS-
+ use padding 
+_________________position icon within input tag___________________
+46)move icon within input tag by givngposition property only in 
+child without doing anything to parent(so easy)
+//note parent div must be present for doing this
+//html
+<div className="d-flex">
+  <input/>//block elm in bootstrap
+   <span><icon_name className="icon"/></span>
+</div>
+//css
+.icon{
+  position: absolute;
+  right: 20px;//any
+  bottom: 10px;//any
+}
+__________________child/parent content inheriting action/even fn of its parent
+47)
+ pointerEvents(css property) allow mouse events to disable that element interaction(event action)
+in which pointerEvents css property is given but if this elm is present over another behind elm 
+then action done on elm having pointerEvents css property will not block the actions of
+ behind elm .It make us feel that behind elm is completely able to do action in all its part 
+as if there is no elm above it(just like absolute(of elm having pointerEvents css property in mouse event 
+but still can be visible on the screen in my lang)
+//i.e,elm( having pointerEvents css property) is visible only dekhne k liye + disable during mouse 
+actions on it + its behind elm ovverrides its own fn on the area covered by 
+elm( having pointerEvents css property).
+Conclusion: Thus pointerEvents allow mouse events to ignore the elm( having pointerEvents css property)
+and directly to to its parent elm to the
+ parent element.
+using CSS only
+//html
+<div className="d-flex">
+  <input/>//block elm in bootstrap
+   <span style={{ pointerEvents: "none" }} ><icon_name className="icon"/></span>
+</div>
+//css
+.icon{
+  position: absolute;
+  right: 20px;//any
+  bottom: 10px;//any
+}
+______________________________________Date picker of type=date______________________
+48)allow open of date picker on clicking the input elm( but it will remove default date picker icon
+So in order to show icon then use own icon with position property(in icon tag) and with style={{ pointerEvents: "none" }}
+(in icon span tag)        
+//CSS-
+input.datePicker {
+  position: relative;
+  overflow: hidden;
+}
+input.datePicker::-webkit-calendar-picker-indicator {
+  width:100%;/* allow click then open within whole input elm  */
+  display: block;
+  top: 0;
+  left: 0;
+  background: #0000;
+  position: absolute;
+  transform: scale(12);
+}   
+
+Note - dont use mui inbuilt date picker 
+i)will not able to apply e.target.value
+ii)its width height is very large
+________________________________________Deploy___________________________________________
+49)Deploy 
+1)Uploading in github
+i)upload every folders/files in github except the node modulus folder
+
+2)Deploy in netlify after uploading file in github -
+i)netlify->Deploy React on Netlify->login->sites->import from git->github->Authorized->pick a repo of github
+ii)Delete prev deployed app(if any)
+a)site settings->delete site
+b)
+Change build command as:
+CI= npm run build
+-> deoloy site
+c)Rename your deployed website website 
+site settings-> change site name->change it
+d)env variable adding
+Site settings->Environment variables->choose import from .env file-> paste all contents of .env file
+e)Deploy again in netlify after env vaiable adding
+deploy->trigger deploy->clear cache... and deploy
+
+3)Changes in firebase
+i)Authentication->settings->Authorized domains->Add domain-> give renamed deployed web app name
+ii)Authentication->Template->password reset-> customize url->paste link of reset password page of my deployed website
+iii)Authentication->Template->Email address verification->keep default one
+_________________________________________Animation___________________________________
+50)Animation- Animation added unwanted horizontal scroll in lesser screen width device.
+To avoid it use-
+/* Note: overflox-x is used in html,body tag to avoid unwanted horizontal scroll during animation */
+html {
+  overflow-x: hidden;
+}
+body{
+  /* clip is used so that overflow property does not restrict position sticky */
+  overflow-x: clip;
+}
+_________________________________Custom url of firebase template _______________________
+51)Avoid change of custom url in firebase template 
+Bug/issue-Changing custom url in one template with link of our own page , then all the template's custom url will be 
+automatically updated with the same custom url in every template like password reset,
+email verification ,... all template.
+Sol-
+Custom url in every template keep it as default url only(even for reset pass also).
+
+
+
+
+
+
+
+
+
+
+
